@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gunicorn-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: gunicorn
+  template:
+    metadata:
+      labels:
+        component: gunicorn
+    spec:
+      containers:
+        - name: gunicorn
+          image: himanshudhiman/coderun-web:v8
+          command: ["/bin/bash", "run_gunicorn.sh"]
+          ports:
+            - containerPort: 8000
+          env:
+            - name: REDIS_HOST
+              value: redis://redis-cluster-ip-service:6379
+
+            - name: POSTGRES_USER
+              value: postgres
+
+            - name: POSTGRES_HOST
+              value: postgres-cluster-ip-service
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: password
+
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cluster-credentials
+                  key: SECRET_KEY
+
+            - name: AUTH_SERVER
+              valueFrom:
+                secretKeyRef:
+                  name: cluster-credentials
+                  key: AUTH_SERVER
+
+            - name: cloud_name
+              valueFrom:
+                secretKeyRef:
+                  name: cluster-credentials
+                  key: cloud_name
+
+            - name: api_key
+              valueFrom:
+                secretKeyRef:
+                  name: cluster-credentials
+                  key: api_key
+
+            - name: api_secret
+              valueFrom:
+                secretKeyRef:
+                  name: cluster-credentials
+                  key: api_secret

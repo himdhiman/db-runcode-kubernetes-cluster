@@ -1,0 +1,8 @@
+celery -A runcode.celery worker --pool=solo -l INFO
+celery -A runcode beat -l INFO
+
+ docker build -t himanshudhiman/coderun-web:v1 --build-arg SECRET_KEY="xd(marrvy5-oq7i&ihaae&p62$g+3#%$#i7$qntva70wpbl^b!" --build-arg DB_NAME="dbcode" --build-arg DB_USER="postgres" --build-arg DB_PASSWORD="Himanshu" --build-arg DB_HOST="localhost" --build-arg REDIS_HOST="redis://localhost:6379" --build-arg AUTH_SERVER="http://localhost:8001/" --build-arg cloud_name="hawmbkjqq" --build-arg api_key="528453244525954" --build-arg api_secret="-Oy4eTG8D7W9O-r6Hnmpw9N2QWk" .
+
+
+
+kubectl create secret generic runcode --from-literal=SECRET_KEY="xd(marrvy5-oq7i&ihaae&p62$g+3#%$#i7$qntva70wpbl^b!" --from-literal=DB_NAME="dbcode" --from-literal=DB_USER="postgres" --from-literal=DB_PASSWORD="Himanshu" --from-literal=DB_HOST="localhost" --from-literal=REDIS_HOST="redis://localhost:6379" --from-literal=AUTH_SERVER="http://localhost:8001/" --from-literal=cloud_name="hawmbkjqq" --from-literal=api_key="528453244525954" --from-literal=api_secret="-Oy4eTG8D7W9O-r6Hnmpw9N2QWk"
